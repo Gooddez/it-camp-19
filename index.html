@@ -1,0 +1,827 @@
+<html lang="en">
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Unicase:wght@300;400;500;600;700&family=Inknut+Antiqua:wght@300;400;500;600;700;800&family=Libre+Caslon+Display&family=Quintessential&family=Ysabeau:wght@100;200;300;400;500&display=swap"
+            rel="stylesheet"
+        />
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Fantastic Beasts</title>
+    </head>
+    <body>
+        <!-- stars background -->
+        <div id="star"></div>
+
+        <!-- hero wallpaper -->
+        <section class="wallpaper-container">
+            <img
+                data-speed="-15"
+                id="wallpaper-parallax"
+                class="parallax"
+                src="https://wallpaperaccess.com/full/880382.jpg"
+                alt=""
+            />
+            <div class="overlay">
+                <div data-speed="-21" class="header-container parallax" id="header">
+                    <span class="line"></span>
+                    <h1>FANTASTIC BEASTS</h1>
+                    <span class="line"></span>
+                </div>
+                <div data-speed="-18" id="caption" class="parallax">
+                    Fantastic Beasts is a movie that<br />
+                    follows the adventures of magizoologist.
+                </div>
+            </div>
+        </section>
+
+        <div class="content-container">
+            <!-- divider -->
+            <div class="divider-container">
+                <div class="line"></div>
+                <div class="divider-head-container">
+                    <div class="head"></div>
+                    <div class="head"></div>
+                    <div class="head"></div>
+                </div>
+                <div class="line"></div>
+            </div>
+
+
+
+            <!-- beastlist -->
+            <section class="beasts-lists-section">
+                <div id="beasts-list-container"></div>
+            </section>
+
+            <!-- divider -->
+            <div class="divider-container">
+                <div class="line"></div>
+                <div class="divider-head-container">
+                    <div class="head"></div>
+                    <div class="head"></div>
+                    <div class="head"></div>
+                </div>
+                <div class="line"></div>
+            </div>
+            <div id="modal-container">
+                <div id="modal"></div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+
+<script defer>
+    const beastsMock = [
+        {
+            id: 0,
+            name: "Dragons",
+            img: "https://64.media.tumblr.com/c704f0546a3efbd815c0b4482957d6c7/tumblr_inline_pf4wtj7KDU1v842sa_500.jpg",
+            text: "The Vietnamese Widemouth is a bit of an odd dragon for several reasons. Like other Asian dragons, it has a long, serpentine body and relatively small wings. Its scales are a very dark green or brown, and it has several prominent ridges on its head and along the spine. Curiously, the Widemouth has adapted its fire-breathing ability for its preferred watery habitat - swallowing a large amount of water.",
+        },
+        {
+            id: 1,
+            name: "Antipodean",
+            img: "https://64.media.tumblr.com/f507fd38aa225e099a767c2f3005cea7/tumblr_inline_pethzaqSpR1v842sa_500.jpg",
+            text: "The Antipodean Opaleye is often considered the most beautiful, thanks to its pearly white scales and glittering, multi-coloured eyes. At forty feet long, it is one of the larger types. It is native to New Zealand, but has been known to migrate to Australia for new territory",
+        },
+        {
+            id: 2,
+            name: "Demiguise",
+            img: "https://64.media.tumblr.com/e4446b4988ef19e2ab423572491d4f6d/tumblr_inline_peth9wLjmV1v842sa_500.jpg",
+            text: "A gentle and elusive beast, the demiguise is found in the dense rainforests of east Asia, most prominently in the Malay peninsula. It is a medium-sized ape with long silver hair and bulging gold eyes.",
+        },
+        {
+            id: 3,
+            name: "Ghoul",
+            img: "https://64.media.tumblr.com/90d04757c747ec2111071d8d0238b77d/tumblr_inline_pffv7jPl5g1v842sa_500.jpg",
+            text: "There is much confusion and controversy over the origins of ghouls - some claim that, like inferi, they are human corpses, somehow reanimated through magic. Others contend that ghouls were originally desert shape-shifters who began to lurk around graveyards and mimic human form for access to the bodies, and thus slowly lost their original abilities",
+        },
+        {
+            id: 4,
+            name: "Fwooper",
+            img: "https://64.media.tumblr.com/284b92be75599e561ed23fdf769aaf74/tumblr_inline_pffushNu2k1v842sa_500.jpg",
+            text: "The fwooper is a small, owl-like bird with extremely vivid plumage that comes in varying shades of orange, pink, green, and yellow. Its average wingspan is eighteen inches and it has two short ear tufts, which are generally kept lowered unless the bird is agitated.",
+        },
+        {
+            id: 5,
+            name: "Kitsune",
+            img: "https://64.media.tumblr.com/0dc585891c5324c329aef6d6c169bad9/tumblr_inline_pgau0uG4Fg1v842sa_500.jpg",
+            text: "While the term kitsune can be used for foxes in general, if has come to specifically refer to a species of magical fox found only in Japan. It is incredibly intelligent and long-lived, with some stories claiming that they can live over a thousand years.",
+        },
+        {
+            id: 6,
+            name: "Kelpie",
+            img: "https://64.media.tumblr.com/42c8f632befc5d8ecb7f4e1df47f8cd3/tumblr_inline_pgatey0UhZ1v842sa_500.png",
+            text: "The kelpie is a shape-shifting creature native to the freshwater rivers and lakes of Britain, Ireland, and Scotland. Likes its saltwater cousin, the each uisge, it often assumes the form of a horse with a dripping mane, and attempts to lure humans into climbing on its back. Once mounted, the kelpie’s skin becomes adhesive, preventing the rider from escaping. At that point, the kelpie takes off - if the rider is lucky, the kelpie contents itself with a heart-pounding race around its territory before unceremoniously bucking the human off into the water. Equally likely, though, is the chance that the kelpie will follow the each uisge’s example and drag its victim underwater to be eaten alive.",
+        },
+        {
+            id: 7,
+            name: "Kappa",
+            img: "https://64.media.tumblr.com/b11ba96cde81388786be2f648d792af4/tumblr_inline_pgaufqtW7s1v842sa_500.jpg",
+            text: "An amphibious yōkai from Japan, the kappa looks somewhat like a monkey crossed with a turtle - it has green scales, webbed hands and feet, and a yellowish-brown carapace upon its back. It generally stands about two to three and a half feet tall, with females being slightly larger than males. A circular depression on its head, called its sara (”dish”) retains water, and if this is damaged or spilled, the kappa is severely weakened and may even die.",
+        },
+        {
+            id: 8,
+            name: "Chimaera",
+            img: "https://64.media.tumblr.com/a531ec7719754ba3420bf31354b26512/tumblr_inline_pem2viJxSL1v842sa_400.png",
+            text: "The chimaera is a ferocious monster with the head of a lion, the body of a goat, and the tail of a dragon. It has many fearsome attributes, including a thick hide that is impervious to spells, the ability to breathe fire up to nine feet, and extremely corrosive saliva. The last is rumoured to be able to eat through a cast-iron cauldron in less than five minutes.",
+        },
+        {
+            id: 9,
+            name: "Jarvey",
+            img: "https://64.media.tumblr.com/850b601c1ce501f1437a32b1ecf9c7c5/tumblr_inline_pg40l9a8Aj1v842sa_500.jpg",
+            text: "The jarvey is a large magical mustelid found throughout Europe and North America. Closely resembling mundane polecats, it is generally a dark brown with a paler underbelly, though certain isolated populations can develop rather striking colour variations.",
+        },
+        {
+            id: 10,
+            name: "Jackalope",
+            img: "https://i.pinimg.com/originals/6f/31/f6/6f31f6917f8f553e7b5e081c7a25ad2a.jpg",
+            text: "A familiar feather of the American West, the jackalope is a large hare-like creature weighing up to fifteen pounds. Its back, flanks, and limbs are generally a dark brown or greyish-brown colour, while the underparts are a pale grey. Both sexes possess thin, branching horns similar to a deer’s antlers.",
+        },
+        {
+            id: 11,
+            name: "Impundulu",
+            img: "https://64.media.tumblr.com/ef7c69bfc0b27170fddfa48de6021c5e/tumblr_inline_pg3zknSebU1v842sa_500.jpg",
+            text: "The impundulu is a magical bird found throughout sub-Saharan Africa. It has dark brown, almost black, plumage, with hints of iridescent purple on its back. Rumour has it that they are impervious to bullets, knives, and spells, so its feathers and fat are valuable commodities.",
+        },
+        {
+            id: 12,
+            name: "Imp",
+            img: "https://64.media.tumblr.com/318b2c30ee2966f8b7d25cf97b272324/tumblr_inline_pg3zdeIkcI1v842sa_500.jpg",
+            text: "Related to the pixie, imps are small humanoids between six and eight inches tall, with dark brown hairless skin. They are only found in Britain and Ireland, preferring damp habitats such as marshland or river banks.",
+        },
+        {
+            id: 13,
+            name: "Tzabcan",
+            img: "https://64.media.tumblr.com/b1e7b85a2ca103d8a6cc6cfd3344d9bd/tumblr_inline_pfwkrqU9Ps1v842sa_500.png",
+            text: "Native to Central America, the Tzabcan is the largest horned serpent, regularly exceeding thirty feet in length. It has rather rough scales, which are a brown or grey ground colour, overlaid with dark, diamond-shaped blotches with lighter edges. Its horns are long and thin, extending up and then backwards and down.",
+        },
+        {
+            id: 14,
+            name: "Mishi-ginebig",
+            img: "https://64.media.tumblr.com/5e381907a8e15a1d4d05f2b3651f8480/tumblr_inline_pfwkesOnFS1v842sa_400.jpg",
+            text: "The Mishi-ginebig is the smallest of the horned serpents at only ten to twelve feet long. It has a light grey base colour with a row of large brown or black spots trailing down the centre of its back, and three smaller rows of alternating spots down each side. It has long, straight or slightly curved, ringed horns, which are between two and three feet long.",
+        },
+        {
+            id: 15,
+            name: "Estakwvnayv",
+            img: "https://64.media.tumblr.com/d0a2e7465672d5d31a02652b2ed9bff2/tumblr_inline_pfwk1paatc1v842sa_500.png",
+            text: "The second largest horned serpent, the Estakwvnayv is generally twenty to twenty-eight feet long. Its body scales a dark brown with black crossbands, with two dark stripes on either side of the head extending back from the eye. While both sexes possess horns, males’ are longer and have a forward-pointing tine.",
+        },
+        {
+            id: 16,
+            name: "Awanyu",
+            img: "https://64.media.tumblr.com/c6496812619a7793c25fd4ee18d8f674/tumblr_inline_pfwkauR2Hy1v842sa_500.jpg",
+            text: "Horned serpents are, as their name suggests, gigantic snakes that possess horns. They are found only in North and Central America, and mostly shun human contact. However, they are said to be intelligent and capable of speech. Their scales are prized for their powers of divination, and the horns can have powerful medicinal properties, if freely given.",
+        },
+        {
+            id: 17,
+            name: "Horklump",
+            img: "https://64.media.tumblr.com/d8b3ded605bff428db87ece141deaa1f/tumblr_inline_pfwj3zyWyB1v842sa_500.jpg",
+            text: "A relatively simple creature, the horklump resembles a fleshy, pinkish mushroom covered with sparse, wiry black bristles. It feeds upon burrowing insects, spreading its thin, muscular tentacles out underground. When it comes across prey, the tentacles secrete a sticky slime which instantly binds to the victim and is stronger than epoxy. The immobilised prey can then be dragged back to the main body for digestion.",
+        },
+        {
+            id: 18,
+            name: "Cockatrice",
+            img: "https://64.media.tumblr.com/99343c8a89622622f34c779345a92e1d/tumblr_inline_pem4ahC2pX1v842sa_500.png",
+            text: "Standing only about two feet tall, the cockatrice may not look like much of a threat, but it is considered one of the most formidable magical creatures in Europe. It has the head and body of a large chicken, generally with brown or black plumage; in addition to a reptilian tail, it also has a strong pair of leathery bat-like wings. Males are distinguished by a large red comb and wattle, and bright green or blue plumage around the neck.",
+        },
+        {
+            id: 19,
+            name: "Hippogriff",
+            img: "https://64.media.tumblr.com/6a8154472e005491739eebf1fd30a8ec/tumblr_inline_pfq3uqyP8C1v842sa_500.jpg",
+            text: "The result of crossbreeding a griffin with a horse, hippogriffs combine the head, wings, and forelegs of an eagle with the body and hind legs of a horse. The eagle parts have dense, waterproof plumage, while the rest of the body is covered is short fur; both feathers and fur can be a variety of colours, although brown and black are most common.",
+        },
+        {
+            id: 20,
+            name: "Golen Snidget",
+            img: "https://64.media.tumblr.com/e0b4434f710cfb47d95e0fcfb7883c56/tumblr_inline_pfhugowh5G1v842sa_500.jpg",
+            text: "Endemic to Colombia and Venezuela, the golden snidget is a small, round bird, averaging just twelve centimetres from tail to beak tip. Its plumage is a warm gold colour, which many deepen to bronze along the back and tail. It is known for its remarkable agility and speed, a result of having fully rotational wings.",
+        },
+        {
+            id: 21,
+            name: "Griffin",
+            img: "https://64.media.tumblr.com/f89a754f904355790292c067dd48463e/tumblr_inline_pfmetlinf21v842sa_500.jpg",
+            text: "A well known magical creature, the griffin is a bird-cat hybrid, which combines the traits of an eagle and a lion. Its eagle parts, which include the head, neck, forelegs, and wings, have dense tawny-gold plumage with dark markings on the wings. The forelegs are heavily feathered and possess long, dangerous talons.",
+        },
+        {
+            id: 22,
+            name: "Graphorn",
+            img: "https://64.media.tumblr.com/8cdb3a438665e36e0dae46591cebfbfb/tumblr_inline_pfhuykIumZ1v842sa_500.jpg",
+            text: "Looking rather like a modern dinosaur, the graphorn is a large reptilian creature with pebbled, greyish-purple skin. Its hide is incredibly tough and there are additional armoured plates around the neck, which can be raised or lowered. Both sexes possess horns, although males’ are longer and thicker. Bizarrely, its mouth is surrounded by several tentacle-like appendages - these are used when hunting to stun prey with a powerful jolt of magic.",
+        },
+        {
+            id: 23,
+            name: "Fire Salamander",
+            img: "https://64.media.tumblr.com/3195917272f569bb631566212a1188a2/tumblr_inline_pfb3x3a37b1v842sa_500.jpg",
+            text: "Fire salamanders are small, fire-dwelling lizards with slender bodies and blunt snouts. They are found worldwide and there is much variation in colouring and markings. However, all fire salamanders are born from suitably large and hot fires.",
+        },
+    ];
+
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const initWallpaperPallalax = () => {
+        const parallaxElements = document.querySelectorAll(".parallax");
+
+        const onScroll = () => {
+            parallaxElements.forEach((element) => {
+                const yPos = -((window.pageYOffset * element.dataset.speed) / 100);
+                element.style.transform = "translateY(" + yPos + "px)";
+            });
+        };
+
+        window.addEventListener("scroll", onScroll);
+    };
+
+    const renderBeasts = () => {
+        const beastsContainerEl = document.getElementById("beasts-list-container");
+
+        const getTriggerDirection = (id) =>
+            id % 3 == 0 ? "trigger_left" : id % 3 == 1 ? "" : "trigger_right";
+
+        const beastElementHtml = (name, image, id, text) => `
+            <div data-id="${id}" class="beast-container trigger ${getTriggerDirection(id)}">
+                <img class="beast-image" src="${image}" alt="" />
+                <div class="flex-row">
+                    <span class="circle"></span>
+                    <span class="beast-name">${name}</span>
+                </div>
+                <div class="description">
+                    ${text}
+                </div>
+                <button onclick="onDetailClick(${id})">Detail</button>
+            </div>
+        `;
+
+        beastsContainerEl.innerHTML = beastsMock.reduce(
+            (acc, cur) => `${acc}${beastElementHtml(cur.name, cur.img, cur.id, cur.text)}`,
+            ""
+        );
+    };
+
+    const modalEl = document.getElementById("modal");
+    const modalContainerEl = document.getElementById("modal-container");
+
+    const onDetailClick = (id) => {
+        const currentBeast = beastsMock.find((e) => e.id == id);
+
+        if (!currentBeast) return;
+
+        const modalInnerHtml = () => {
+            return `
+                <div onclick="close()" id="close-button">
+                    <span></span>
+                    <span></span>
+                </div>
+                <img src="${currentBeast.img}" alt="" />
+                <div class="modal-content-container ">
+                    <h1 class="">${currentBeast.name}</h1>
+                    <p class="">${currentBeast.text}</p>
+                    <div class="divider-container modal-divider">
+                        <div class="line"></div>
+                        <div class="divider-head-container">
+                            <div class="head"></div>
+                            <div class="head"></div>
+                            <div class="head"></div>
+                        </div>
+                        <div class="line"></div>
+                    </div>
+                </div>
+            `;
+        };
+
+        modalEl.innerHTML = modalInnerHtml();
+
+        gsap.set(modalContainerEl, {
+            display: "flex",
+        });
+
+        gsap.fromTo(
+            modalContainerEl,
+            { autoAlpha: 0, duration: 0.5 },
+            { autoAlpha: 1, ease: "power2.out" }
+        );
+
+        gsap.fromTo(
+            modalEl,
+            { y: 100, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, ease: "elastic.out(1, 0.8)", duration: 1.2 }
+        );
+
+        document.body.style.overflow = "hidden";
+
+        const closeButtonEl = document.getElementById("close-button");
+        closeButtonEl.addEventListener("click", () => {
+            gsap.fromTo(
+                modalContainerEl,
+                { autoAlpha: 1 },
+                {
+                    autoAlpha: 0,
+                    onComplete: () => {
+                        modalContainerEl.style.display = "none";
+                    },
+                }
+            );
+
+            gsap.to(modalEl, { y: 100, ease: "power4.out", duration: 1.3 });
+
+            document.body.style.overflow = "auto";
+        });
+    };
+
+    renderBeasts();
+
+    gsap.from(document.getElementById("header"), {
+        y: 100,
+        autoAlpha: 0,
+        duration: 1.3,
+        ease: "power2.out",
+    });
+
+    gsap.from(document.getElementById("caption"), {
+        y: 100,
+        autoAlpha: 0,
+        duration: 1.5,
+        delay: 0.2,
+        ease: "power2.out",
+    });
+
+    gsap.from(document.getElementById("wallpaper-parallax"), {
+        scale: 1.4,
+        autoAlpha: 0,
+        duration: 2,
+        onComplete: initWallpaperPallalax,
+    });
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    function hide(elem) {
+        gsap.set(elem, { autoAlpha: 0 });
+    }
+
+    function animateFrom(elem, direction) {
+        direction = direction || 1;
+        let x = 0;
+        let y = direction * 100;
+        if (elem.classList.contains("trigger_left")) {
+            x = -100;
+            y = 0;
+        } else if (elem.classList.contains("trigger_right")) {
+            x = 100;
+            y = 0;
+        }
+        elem.style.transform = "translate(" + x + "px, " + y + "px)";
+        elem.style.opacity = "0";
+        gsap.fromTo(
+            elem,
+            { x, y, autoAlpha: 0 },
+            {
+                duration: 2,
+                x: 0,
+                y: 0,
+                autoAlpha: 1,
+                ease: "expo",
+                overwrite: "auto",
+            }
+        );
+    }
+
+    gsap.utils.toArray(".trigger").forEach(function (elem) {
+        hide(elem);
+        ScrollTrigger.create({
+            trigger: elem,
+            onEnter: function () {
+                animateFrom(elem);
+            },
+            onEnterBack: function () {
+                animateFrom(elem, -1);
+            },
+            onLeave: function () {
+                hide(elem);
+            },
+        });
+    });
+</script>
+
+<style>
+    :root {
+        --main-background-color: #10141b;
+        --main-text-color: #fff;
+
+        --font-main: "Ysabeau", monospace;
+        --font-fantasy: "Cormorant Unicase", serif;
+
+        --content-padding-x: 2rem;
+    }
+
+    * {
+        font-family: var(--font-main);
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+
+    body {
+        background-color: var(--main-background-color);
+        color: var(--main-text-color);
+        padding-bottom: 4rem;
+    }
+
+    /* wallpaper */
+    .wallpaper-container {
+        position: relative;
+        overflow: hidden;
+    }
+    .wallpaper-container::after {
+        content: "";
+        background: linear-gradient(
+            180deg,
+            rgba(15, 30, 52, 0) 0,
+            rgba(15, 30, 52, 0) 70%,
+            var(--main-background-color)
+        );
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+    }
+
+    .wallpaper-container > img {
+        height: 100vh;
+        width: 100%;
+        object-fit: cover;
+        object-position: top;
+    }
+
+    .wallpaper-container .overlay {
+        background: rgb(255, 255, 255);
+        background: radial-gradient(circle, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 100%);
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    .wallpaper-container .overlay .header-container {
+        display: flex;
+        flex-direction: column;
+        gap: -4px;
+    }
+
+    .wallpaper-container .overlay .header-container > h1 {
+        font-family: var(--font-fantasy);
+        font-size: 2.3rem;
+        font-weight: 800;
+    }
+
+    .wallpaper-container .overlay .header-container .line {
+        width: 100%;
+        height: 1.5px;
+        background-color: #959595;
+        opacity: 30%;
+    }
+
+    .wallpaper-container .overlay #caption {
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 200;
+        color: var(--main-text-color);
+        opacity: 0.8;
+    }
+
+    .content-container {
+        display: flex;
+        flex-direction: column;
+        max-width: 920px;
+        padding: var(--content-padding-x);
+        margin: auto;
+    }
+
+    /* beasts list */
+    .beasts-lists-section {
+        display: flex;
+        flex-direction: row;
+        gap: 3rem;
+    }
+
+    #beasts-list-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6rem 3rem;
+    }
+
+    .beast-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        width: 250px;
+    }
+
+    .beast-container .border {
+        position: absolute;
+        inset: 8px 8px 8px 8px;
+        border: 2px solid white;
+        z-index: 10;
+        opacity: 60%;
+    }
+
+    .beast-container .beast-name {
+        font-family: var(--font-fantasy);
+        width: 100%;
+        font-size: 1.8rem;
+        font-weight: 500;
+    }
+
+    .beast-container .description {
+        color: #959595;
+        margin-top: -0.2rem;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        min-width: 0;
+    }
+
+    .beast-container .circle {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background-color: antiquewhite;
+        margin-right: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .beast-container .beast-image {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        width: 100%;
+        aspect-ratio: 6/7;
+        object-fit: cover;
+        margin-bottom: 1rem;
+    }
+
+    .beast-container > button {
+        cursor: pointer;
+        background-color: transparent;
+        border: 1px solid #5c5e6e;
+        font-size: 1.2rem;
+        padding: 0.7rem;
+        color: white;
+        margin-top: 1rem;
+        border-radius: 4px;
+    }
+
+    .beast-container > button:hover {
+        background-color: transparent;
+        border: 1px solid white;
+        font-size: 1.2rem;
+        padding: 0.7rem;
+        color: white;
+        margin-top: 1rem;
+        border-radius: 4px;
+    }
+
+    /* modal */
+    #modal-container {
+        z-index: 10;
+        display: none;
+        position: fixed;
+        inset: 0;
+        background-color: #000000aa;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #modal {
+        position: relative;
+        padding: 2rem 2rem;
+        border-radius: 10px;
+
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        background-color: var(--main-background-color);
+        z-index: 20;
+        align-self: center;
+        max-width: 700px;
+        height: 420px;
+        display: flex;
+        align-items: start;
+        gap: 2rem;
+    }
+
+    @keyframes zoom {
+        0% {
+            transform: scale(1);
+        }
+        100% {
+            transform: scale(1.5);
+        }
+    }
+
+    #star {
+        position: fixed;
+        z-index: -1;
+        top: 50%;
+        left: 50%;
+        height: 0px;
+        width: 0px;
+        border-radius: 50%;
+        background-color: transparent;
+        box-shadow: 9vw -27vh 1px 1px hsla(18, 5%, 64%, 0.9),
+            48vw -14vh 1px 1px hsla(18, 5%, 64%, 0.9), 11vw -2vh 0px 1px hsla(18, 5%, 64%, 0.9),
+            29vw -5vh 1px 0px hsla(18, 5%, 64%, 0.9), 8vw 46vh 0px 0px hsla(18, 5%, 64%, 0.9),
+            4vw -12vh 0px 0px hsla(18, 5%, 64%, 0.9), -25vw 19vh 0px 1px hsla(18, 5%, 64%, 0.9),
+            -33vw 28vh 0px 0px hsla(18, 5%, 64%, 0.9), -8vw 42vh 0px 1px hsla(18, 5%, 64%, 0.9),
+            -39vw -44vh 1px 0px hsla(18, 5%, 64%, 0.9), -31vw 32vh 0px 0px hsla(18, 5%, 64%, 0.9),
+            -1vw -31vh 0px 1px hsla(18, 5%, 64%, 0.9), 25vw -19vh 1px 1px hsla(18, 5%, 64%, 0.9),
+            26vw -20vh 0px 1px hsla(18, 5%, 64%, 0.9), -43vw -4vh 1px 1px hsla(18, 5%, 64%, 0.9),
+            32vw 28vh 1px 0px hsla(18, 5%, 64%, 0.9), -6vw 50vh 0px 0px hsla(18, 5%, 64%, 0.9),
+            50vw 11vh 1px 1px hsla(18, 5%, 64%, 0.9), -9vw 23vh 1px 0px hsla(18, 5%, 64%, 0.9),
+            38vw -29vh 1px 1px hsla(18, 5%, 64%, 0.9), 16vw -16vh 1px 0px hsla(18, 5%, 64%, 0.9),
+            32vw 33vh 0px 0px hsla(18, 5%, 64%, 0.9), -39vw -41vh 1px 0px hsla(18, 5%, 64%, 0.9),
+            23vw 30vh 0px 0px hsla(18, 5%, 64%, 0.9), -7vw 44vh 1px 1px hsla(18, 5%, 64%, 0.9),
+            30vw 44vh 1px 0px hsla(18, 5%, 64%, 0.9), -3vw -3vh 0px 0px hsla(18, 5%, 64%, 0.9),
+            43vw 20vh 0px 0px hsla(18, 5%, 64%, 0.9), -38vw -4vh 0px 0px hsla(18, 5%, 64%, 0.9),
+            0vw -19vh 1px 0px hsla(18, 5%, 64%, 0.9), 30vw -19vh 1px 1px hsla(18, 5%, 64%, 0.9),
+            -46vw 17vh 0px 0px hsla(18, 5%, 64%, 0.9), -48vw -45vh 1px 1px hsla(18, 5%, 64%, 0.9),
+            -25vw 24vh 0px 0px hsla(18, 5%, 64%, 0.9), 11vw -4vh 1px 0px hsla(18, 5%, 64%, 0.9),
+            33vw 5vh 1px 1px hsla(18, 5%, 64%, 0.9), -7vw 30vh 1px 1px hsla(18, 5%, 64%, 0.9),
+            -17vw -14vh 0px 1px hsla(18, 5%, 64%, 0.9), 35vw 27vh 0px 0px hsla(18, 5%, 64%, 0.9),
+            9vw -22vh 1px 0px hsla(18, 5%, 64%, 0.9), 5vw 44vh 1px 1px hsla(18, 5%, 64%, 0.9),
+            -15vw -15vh 0px 1px hsla(18, 5%, 64%, 0.9), 33vw 3vh 1px 1px hsla(18, 5%, 64%, 0.9),
+            3vw -16vh 0px 1px hsla(18, 5%, 64%, 0.9), -40vw -34vh 1px 0px hsla(18, 5%, 64%, 0.9),
+            -20vw -22vh 0px 1px hsla(18, 5%, 64%, 0.9), 46vw -34vh 1px 0px hsla(18, 5%, 64%, 0.9),
+            6vw -8vh 1px 1px hsla(18, 5%, 64%, 0.9), -16vw 14vh 0px 0px hsla(18, 5%, 64%, 0.9),
+            20vw -23vh 0px 0px hsla(18, 5%, 64%, 0.9), 13vw 37vh 1px 1px hsla(18, 5%, 64%, 0.9),
+            16vw -38vh 0px 0px hsla(18, 5%, 64%, 0.9), 27vw 18vh 0px 1px hsla(18, 5%, 64%, 0.9),
+            35vw -16vh 0px 0px hsla(18, 5%, 64%, 0.9), 37vw 14vh 0px 1px hsla(18, 5%, 64%, 0.9),
+            15vw -40vh 1px 0px hsla(18, 5%, 64%, 0.9), -17vw 19vh 1px 1px hsla(18, 5%, 64%, 0.9),
+            33vw -28vh 1px 1px hsla(18, 5%, 64%, 0.9), 18vw 23vh 0px 1px hsla(18, 5%, 64%, 0.9),
+            -2vw 21vh 1px 1px hsla(18, 5%, 64%, 0.9), -22vw 9vh 0px 1px hsla(18, 5%, 64%, 0.9),
+            26vw -30vh 0px 1px hsla(18, 5%, 64%, 0.9), 29vw 47vh 1px 0px hsla(18, 5%, 64%, 0.9),
+            13vw -1vh 0px 1px hsla(18, 5%, 64%, 0.9), -37vw -12vh 1px 0px hsla(18, 5%, 64%, 0.9),
+            -48vw 7vh 1px 0px hsla(18, 5%, 64%, 0.9), -45vw 42vh 0px 1px hsla(18, 5%, 64%, 0.9),
+            -49vw -33vh 1px 0px hsla(18, 5%, 64%, 0.9), 24vw 16vh 1px 0px hsla(36, 5%, 64%, 0.84),
+            -23vw -39vh 1px 1px hsla(36, 5%, 64%, 0.84), 43vw 23vh 0px 0px hsla(36, 5%, 64%, 0.84),
+            -6vw -46vh 0px 1px hsla(36, 5%, 64%, 0.84), -30vw -1vh 1px 1px hsla(36, 5%, 64%, 0.84),
+            30vw 42vh 0px 0px hsla(36, 5%, 64%, 0.84), -12vw -49vh 1px 0px hsla(36, 5%, 64%, 0.84),
+            -1vw -19vh 0px 0px hsla(36, 5%, 64%, 0.84), -25vw -17vh 1px 1px hsla(36, 5%, 64%, 0.84),
+            6vw -1vh 1px 0px hsla(36, 5%, 64%, 0.84), -46vw 15vh 1px 0px hsla(36, 5%, 64%, 0.84),
+            43vw 41vh 0px 0px hsla(36, 5%, 64%, 0.84), 45vw -24vh 1px 0px hsla(36, 5%, 64%, 0.84),
+            -37vw -15vh 0px 0px hsla(36, 5%, 64%, 0.84), -36vw 2vh 1px 1px hsla(36, 5%, 64%, 0.84),
+            31vw -34vh 0px 0px hsla(36, 5%, 64%, 0.84), 14vw 27vh 0px 0px hsla(36, 5%, 64%, 0.84),
+            32vw -7vh 0px 0px hsla(36, 5%, 64%, 0.84), -29vw 13vh 1px 1px hsla(36, 5%, 64%, 0.84),
+            -21vw -10vh 0px 1px hsla(36, 5%, 64%, 0.84), -7vw -7vh 1px 1px hsla(36, 5%, 64%, 0.84),
+            -21vw 27vh 0px 0px hsla(36, 5%, 64%, 0.84), -15vw -21vh 0px 1px hsla(36, 5%, 64%, 0.84),
+            -34vw 31vh 0px 1px hsla(36, 5%, 64%, 0.84), 37vw 0vh 0px 0px hsla(36, 5%, 64%, 0.84),
+            -14vw 42vh 0px 1px hsla(36, 5%, 64%, 0.84), -2vw 34vh 0px 0px hsla(36, 5%, 64%, 0.84),
+            17vw -48vh 0px 0px hsla(36, 5%, 64%, 0.84), 19vw 24vh 1px 1px hsla(36, 5%, 64%, 0.84),
+            -12vw -48vh 1px 0px hsla(36, 5%, 64%, 0.84), -23vw 22vh 1px 1px hsla(36, 5%, 64%, 0.84),
+            -19vw 2vh 1px 1px hsla(36, 5%, 64%, 0.84);
+        animation: zoom 15s alternate infinite ease-in-out;
+    }
+
+    #modal .modal-content-container {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        align-self: stretch;
+        overflow-y: auto;
+    }
+
+    #modal .modal-content-container h1 {
+        font-family: var(--font-fantasy);
+        margin-bottom: 1rem;
+        font-size: 3rem;
+    }
+
+    #modal .modal-content-container p {
+        text-indent: 2rem;
+    }
+
+    #modal img {
+        width: 300px;
+        height: 100%;
+        aspect-ratio: 4/5;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    #modal .modal-divider {
+        padding: 0;
+        margin-top: auto;
+        margin-bottom: 5px;
+    }
+
+    .flex-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .flex-col-start {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .flex-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    /* close button */
+    #close-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: transparent;
+        transition-duration: 0.7;
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #close-button:hover {
+        background-color: red;
+    }
+
+    #close-button > span {
+        position: absolute;
+        width: 15px;
+        height: 2px;
+        background-color: white;
+    }
+
+    #close-button > span:nth-child(1) {
+        rotate: 45deg;
+    }
+
+    #close-button > span:nth-child(2) {
+        rotate: -45deg;
+    }
+
+    .divider-container {
+        margin: 30px auto;
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .divider-container .line {
+        width: 100%;
+        height: 0.5px;
+        background: #5c5e6e;
+    }
+
+    .divider-head-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .divider-head-container .head {
+        flex-shrink: 0;
+        width: 13px;
+        height: 13px;
+        border: 1px solid #d7d4d0;
+        rotate: 45deg;
+    }
+
+    .divider-head-container .head:nth-child(1) {
+        translate: 40%;
+    }
+    .divider-head-container .head:nth-child(3) {
+        translate: -40%;
+    }
+
+    @media screen and (min-width: 768px) {
+        .wallpaper-container .overlay .header-container > h1 {
+            font-size: 5rem;
+        }
+
+        .wallpaper-container .overlay #caption {
+            font-size: 1.5rem;
+        }
+    }
+</style>
